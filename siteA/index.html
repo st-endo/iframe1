@@ -4,31 +4,35 @@
     <title>サイトA</title>
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
-            console.log(1);
             const iframes = document.querySelectorAll('iframe');
             iframes.forEach(iframe => {
                 iframe.addEventListener('load', function() {
                     const specialElementId = this.getAttribute('data-element-id');
-                    this.contentWindow.postMessage(specialElementId, '*');
+                    const frameId = this.getAttribute('id');
+                    this.contentWindow.postMessage({ specialElementId, frameId }, '*');
                 });
             });
-            console.log(1.5);
         });
 
         window.addEventListener('message', function(event) {
-            console.log(3, event);
             const data = event.data;
-            if (typeof data === 'object' && data !== null && 'id' in data && 'height' in data) {
+            if (typeof data === 'object' && data !== null && 'id' in data && 'rect' in data) {
                 const iframe = document.querySelector(`#${data.id}`);
                 if (iframe) {
-                    iframe.style.height = `${data.height}px`;
+                    const div = document.createElement('div');
+                    div.style.width = '200px';
+                    div.style.height = '200px';
+                    div.style.background = 'red';
+                    div.style.position = 'absolute';
+                    div.style.left = `${data.rect.right + iframe.offsetLeft}px`;
+                    div.style.top = `${data.rect.top + iframe.offsetTop}px`;
+                    document.body.appendChild(div);
                 }
             }
         }, false);
     </script>
 </head>
 <body>
-    <!-- <iframe id="frame1" data-element-id="btn1" src="http://localhost:8080/hoge.html"></iframe> -->
-    <iframe id="frame1" data-element-id="btn1" src="http://localhost:8081"></iframe>
+    <iframe id="frame1" data-element-id="btn1" src="http://localhost:8081" style="position:relative;"></iframe>
 </body>
 </html>

@@ -4,26 +4,20 @@
     <title>サイトB</title>
     <script>
         window.addEventListener('message', function(event) {
-            console.log("site b message start");
-            const specialElementId = event.data;
-            console.log(specialElementId);
+            const { specialElementId, frameId } = event.data;
             const specialElement = document.querySelector(`#${specialElementId}`);
-            console.log(specialElement);
             if (specialElement) {
                 const rect = specialElement.getBoundingClientRect();
-                console.log(rect);
-                const height = rect.bottom - rect.top;
-                console.log('window.parent', window.parent);
-                console.log('window.frameElement', window.frameElement);
                 window.parent.postMessage({
-                    height: height
+                    id: frameId,
+                    rect: rect
                 }, '*');
             }
         }, false);
     </script>
 </head>
 <body>
-    <h2>site b</h2>
-    <button id="btn1">Button 1</button>
+    <h2>Site B</h2>
+    <button id="btn1" style="position:relative;">Button 1</button>
 </body>
 </html>
