@@ -2,40 +2,50 @@
 <html>
 <head>
     <title>サイトB</title>
+    <style>
+        button {
+            margin: 10px;
+        }
+    </style>
     <script>
-        let frameId;
-        let specialElement;
+        let boxes = [];
 
         window.addEventListener('message', function(event) {
-            const { specialElementId, frameId: id } = event.data;
-            frameId = id;
-            specialElement = document.querySelector(`#${specialElementId}`);
+            boxes = event.data.boxes;
 
-            if (specialElement) {
-                specialElement.addEventListener('mouseenter', handleMouseEnter);
-                specialElement.addEventListener('mouseleave', handleMouseLeave);
-            }
+            boxes.forEach(box => {
+                const specialElement = document.querySelector(box.target);
+                if (specialElement) {
+                    specialElement.addEventListener('mouseenter', function() {
+                        const rect = specialElement.getBoundingClientRect();
+                        window.parent.postMessage({
+                            action: 'show',
+                            id: event.data.frameId,
+                            rect: rect,
+                            box: box
+                        }, '*');
+                    });
+
+                    specialElement.addEventListener('mouseleave', function() {
+                        window.parent.postMessage({
+                            action: 'hide',
+                            id: event.data.frameId
+                        }, '*');
+                    });
+                }
+            });
         }, false);
-
-        function handleMouseEnter() {
-            const rect = specialElement.getBoundingClientRect();
-            window.parent.postMessage({
-                id: frameId,
-                rect: rect,
-                action: 'show'
-            }, '*');
-        }
-
-        function handleMouseLeave() {
-            window.parent.postMessage({
-                id: frameId,
-                action: 'hide'
-            }, '*');
-        }
     </script>
 </head>
 <body>
-    <h2>Site B</h2>
-    <button id="btn1" style="position:relative;">Button 1</button>
+    <h2>site b</h2>
+    <script>
+        for (let i = 1; i <= 1000; i++) {
+            const btn = document.createElement('button');
+            btn.id = 'btn' + i;
+            btn.textContent = 'Button ' + i;
+            document.body.appendChild(btn);
+        }
+    </script>
 </body>
 </html>
