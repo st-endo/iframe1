@@ -4,11 +4,11 @@ const boxData = Array.from({ length: 1000 }, (v, i) => {
     target: `#btn${i + 1}`,
     width: Math.random() * 200 + 100, // 100 to 300
     height: Math.random() * 200 + 100, // 100 to 300
-    background: ["aqua", "black", "red", "green", "yellow", "orange", "purple"][
+    background: ["aqua", "red", "green", "yellow", "orange", "white", "pink"][
       Math.floor(Math.random() * 7)
     ],
     text: Array.from(
-      { length: Math.floor(Math.random() * 5) + 1 },
+      { length: Math.floor(Math.random() * 170) + 30 },
       () =>
         [
           "hoge",
