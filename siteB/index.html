@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>サイトB</title>
+    <script>
+        window.addEventListener('message', function(event) {
+            const specialElementId = event.data;
+            const specialElement = document.querySelector(`#${specialElementId}`);
+            if (specialElement) {
+                const rect = specialElement.getBoundingClientRect();
+                const height = rect.bottom - rect.top;
+                window.parent.postMessage({
+                    id: window.frameElement.id,
+                    height: height
+                }, '*');
+            }
+        }, false);
+    </script>
+</head>
+<body>
+    <h2>site b</h2>
+    <button id="btn1">Button 1</button>
+</body>
+</html>

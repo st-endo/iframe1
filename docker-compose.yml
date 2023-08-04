@@ -1,0 +1,14 @@
+version: '3'
+services:
+  webA:
+    image: nginx:latest
+    ports:
+      - 8080:80
+    volumes:
+      - ./siteA:/usr/share/nginx/html
+  webB:
+    image: nginx:latest
+    ports:
+      - 8081:80
+    volumes:
+      - ./siteB:/usr/share/nginx/html
