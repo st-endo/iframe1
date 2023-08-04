@@ -15,18 +15,8 @@
             console.log(1.5);
         });
 
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const iframe = document.querySelector('#frame1');
-            iframe.addEventListener('load', function() {
-                const iframeDocument = this.contentDocument || this.contentWindow.document;
-                const buttonInIframe = iframeDocument.querySelector('#btn1');
-                console.log(buttonInIframe);
-                // do something with buttonInIframe
-            });
-        });
-
         window.addEventListener('message', function(event) {
-            console.log(3);
+            console.log(3, event);
             const data = event.data;
             if (typeof data === 'object' && data !== null && 'id' in data && 'height' in data) {
                 const iframe = document.querySelector(`#${data.id}`);
@@ -38,7 +28,7 @@
     </script>
 </head>
 <body>
-    <iframe id="frame1" data-element-id="btn1" src="http://localhost:8080/hoge.html"></iframe>
-    <!-- <iframe id="frame1" data-element-id="btn1" src="http://localhost:8081"></iframe> -->
+    <!-- <iframe id="frame1" data-element-id="btn1" src="http://localhost:8080/hoge.html"></iframe> -->
+    <iframe id="frame1" data-element-id="btn1" src="http://localhost:8081"></iframe>
 </body>
 </html>
