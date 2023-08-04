@@ -2,46 +2,7 @@
 <html>
 <head>
     <title>サイトA</title>
-    <script type="module">
-        import boxData from './boxData.js';
-
-        let redDiv;
-
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const iframes = document.querySelectorAll('iframe');
-            iframes.forEach(iframe => {
-                iframe.addEventListener('load', function() {
-                    const frameId = this.getAttribute('id');
-                    this.contentWindow.postMessage({ frameId, boxes: boxData }, '*');
-                });
-            });
-        });
-
-        window.addEventListener('message', function(event) {
-            const data = event.data;
-            if (typeof data === 'object' && data !== null && 'id' in data) {
-                const iframe = document.querySelector(`#${data.id}`);
-                if (iframe) {
-                    if (data.action === 'show' && 'rect' in data && 'box' in data) {
-                        redDiv = document.createElement('div');
-                        redDiv.style.width = `${data.box.width}px`;
-                        redDiv.style.height = `${data.box.height}px`;
-                        redDiv.style.background = data.box.background;
-                        redDiv.style.position = 'absolute';
-                        redDiv.style.left = `${data.rect.right + iframe.offsetLeft}px`;
-                        redDiv.style.top = `${data.rect.top + iframe.offsetTop}px`;
-                        redDiv.style.overflow = 'auto';
-                        redDiv.style.whiteSpace = 'pre-wrap';
-                        redDiv.textContent = data.box.text;
-                        document.body.appendChild(redDiv);
-                    } else if (data.action === 'hide' && redDiv) {
-                        document.body.removeChild(redDiv);
-                        redDiv = null;
-                    }
-                }
-            }
-        }, false);
-    </script>
+    <script src="main.js" type="module" defer></script>
 </head>
 <body>
     <iframe id="frame1" src="http://localhost:8081" style="position:relative; width:1000px; height:800px;"></iframe>

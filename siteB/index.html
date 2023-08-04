@@ -7,35 +7,7 @@
             margin: 10px;
         }
     </style>
-    <script>
-        let boxes = [];
-
-        window.addEventListener('message', function(event) {
-            boxes = event.data.boxes;
-
-            boxes.forEach(box => {
-                const specialElement = document.querySelector(box.target);
-                if (specialElement) {
-                    specialElement.addEventListener('mouseenter', function() {
-                        const rect = specialElement.getBoundingClientRect();
-                        window.parent.postMessage({
-                            action: 'show',
-                            id: event.data.frameId,
-                            rect: rect,
-                            box: box
-                        }, '*');
-                    });
-
-                    specialElement.addEventListener('mouseleave', function() {
-                        window.parent.postMessage({
-                            action: 'hide',
-                            id: event.data.frameId
-                        }, '*');
-                    });
-                }
-            });
-        }, false);
-    </script>
+    <script src="main.js" type="module" defer></script>
 </head>
 <body>
     <h2>site b</h2>
