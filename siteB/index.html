@@ -3,17 +3,35 @@
 <head>
     <title>サイトB</title>
     <script>
+        let frameId;
+        let specialElement;
+
         window.addEventListener('message', function(event) {
-            const { specialElementId, frameId } = event.data;
-            const specialElement = document.querySelector(`#${specialElementId}`);
+            const { specialElementId, frameId: id } = event.data;
+            frameId = id;
+            specialElement = document.querySelector(`#${specialElementId}`);
+
             if (specialElement) {
-                const rect = specialElement.getBoundingClientRect();
-                window.parent.postMessage({
-                    id: frameId,
-                    rect: rect
-                }, '*');
+                specialElement.addEventListener('mouseenter', handleMouseEnter);
+                specialElement.addEventListener('mouseleave', handleMouseLeave);
             }
         }, false);
+
+        function handleMouseEnter() {
+            const rect = specialElement.getBoundingClientRect();
+            window.parent.postMessage({
+                id: frameId,
+                rect: rect,
+                action: 'show'
+            }, '*');
+        }
+
+        function handleMouseLeave() {
+            window.parent.postMessage({
+                id: frameId,
+                action: 'hide'
+            }, '*');
+        }
     </script>
 </head>
 <body>

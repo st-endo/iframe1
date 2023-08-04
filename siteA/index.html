@@ -3,6 +3,8 @@
 <head>
     <title>サイトA</title>
     <script>
+        let redDiv;
+
         window.addEventListener('DOMContentLoaded', (event) => {
             const iframes = document.querySelectorAll('iframe');
             iframes.forEach(iframe => {
@@ -16,17 +18,22 @@
 
         window.addEventListener('message', function(event) {
             const data = event.data;
-            if (typeof data === 'object' && data !== null && 'id' in data && 'rect' in data) {
+            if (typeof data === 'object' && data !== null && 'id' in data) {
                 const iframe = document.querySelector(`#${data.id}`);
                 if (iframe) {
-                    const div = document.createElement('div');
-                    div.style.width = '200px';
-                    div.style.height = '200px';
-                    div.style.background = 'red';
-                    div.style.position = 'absolute';
-                    div.style.left = `${data.rect.right + iframe.offsetLeft}px`;
-                    div.style.top = `${data.rect.top + iframe.offsetTop}px`;
-                    document.body.appendChild(div);
+                    if (data.action === 'show' && 'rect' in data) {
+                        redDiv = document.createElement('div');
+                        redDiv.style.width = '200px';
+                        redDiv.style.height = '200px';
+                        redDiv.style.background = 'red';
+                        redDiv.style.position = 'absolute';
+                        redDiv.style.left = `${data.rect.right + iframe.offsetLeft}px`;
+                        redDiv.style.top = `${data.rect.top + iframe.offsetTop}px`;
+                        document.body.appendChild(redDiv);
+                    } else if (data.action === 'hide' && redDiv) {
+                        document.body.removeChild(redDiv);
+                        redDiv = null;
+                    }
                 }
             }
         }, false);
