@@ -7,17 +7,13 @@
             margin: 10px;
         }
     </style>
-    <script src="main.js" type="module" defer></script>
+    <script type="module">
+        import generateButtons from "./generateButtons.js"
+        generateButtons();
+    </script>
 </head>
 <body>
     <h2>site b</h2>
-    <script>
-        for (let i = 1; i <= 1000; i++) {
-            const btn = document.createElement('button');
-            btn.id = 'btn' + i;
-            btn.textContent = 'Button ' + i;
-            document.body.appendChild(btn);
-        }
-    </script>
+    <script src="main.js" type="module" defer></script>
 </body>
 </html>
