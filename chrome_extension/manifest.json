@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "For Site B",
+  "description": "Injects script into siteB",
+  "version": "1.0",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["http://localhost:8081/*"],
+  "background": {},
+  "content_scripts": [
+    {
+      "matches": ["http://localhost:8081/*"],
+      "run_at": "document_idle",
+      "js": ["siteB.js"],
+      "css": [],
+      "all_frames": true
+    }
+  ],
+  "action": {}
+}
